@@ -8,28 +8,59 @@ import { ContactList } from "../ContactList/ContactList";
 export class App extends Component {
   
   state = {
-    contacts: [],
+    contacts: [
+    {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
+    {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
+    {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
+    {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
+  ],
+    filter: '',
   }
 
-  formSubmitHendler = data => {
-    const newContact = { id: data.id, name: data.name, number: data.number };
+  formSubmitHаndler = data => {
+    const { name } = data;
+    let newContactsArray;
+    
     this.setState(prevState => ({
-      contacts: [newContact, ...prevState.contacts]
-    }))
-    console.log(this.state)
+      contacts: (prevState.contacts.includes(name)) ?
+        newContactsArray = prevState.contacts :
+        newContactsArray = [data, ...prevState.contacts]
+      })
+    );
+    // if(prevState.includes(name)) {
+    //   newContactsArray = prevState;
+    //   alert(`${name} is already in contacts`);
+    // } else {
+    //   newContactsArray = [data, ...prevState];
+    // }
+    this.setState({ contacts: newContactsArray });
   }
+
+  findByName = e => {
+    this.setState({ filter: e.currentTarget.value });
+  }
+
+  getVisibleContacts = () => {
+    const { filter, contacts } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter),
+    );
+  };
 
   render() {
-    const newContact = this.state.contacts;
+    const { contacts } = this.state;
+    // const visibleContacts = this.getVisibleContacts();
     return (
       <MainContainer>
         <div>
           <h1>Phonebook</h1>
-          <ContactForm onSubmit={this.formSubmitHendler}/>
+          <ContactForm onSubmit={this.formSubmitHаndler}/>
 
           <h2>Contacts</h2>
-          {/* <Filter /> */}
-          <ContactList contacts={newContact}/>
+          {/* <Filter value={filter} onChange={this.findByName}/> */}
+          <ContactList contacts={contacts}/>
         </div>
       </MainContainer>
     );

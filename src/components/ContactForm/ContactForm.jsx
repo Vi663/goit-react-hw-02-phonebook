@@ -7,7 +7,6 @@ export class ContactForm extends Component {
     id: '',
     name: '',
     number: '',
-    contacts: [],
   }
 
   nameInputId = uuidv4();
