@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { MainContainer } from "../MainContainer/MainContainer";
 import { ContactForm } from "../ContactForm/ContactForm";
-// import { Filter } from "../Filter/Filter";
+import { Filter } from "../Filter/Filter";
 import { ContactList } from "../ContactList/ContactList";
 
 export class App extends Component {
@@ -17,28 +17,22 @@ export class App extends Component {
     filter: '',
   }
 
-  formSubmitHаndler = data => {
-    const { name } = data;
-    let newContactsArray;
-    
-    this.setState(prevState => ({
-      contacts: (prevState.contacts.includes(name)) ?
-        newContactsArray = prevState.contacts :
-        newContactsArray = [data, ...prevState.contacts]
-      })
-    );
-    // if(prevState.includes(name)) {
-    //   newContactsArray = prevState;
-    //   alert(`${name} is already in contacts`);
-    // } else {
-    //   newContactsArray = [data, ...prevState];
-    // }
-    this.setState({ contacts: newContactsArray });
+  formSubmitHandler = data => {
+    this.setState((prevState) => {
+      const found = prevState.contacts.find((contact) => contact.name === data.name);
+     
+      if (!found) {
+        return {
+          ...prevState,
+          contacts: [...prevState.contacts, data]
+        };
+      } alert(`${data.name} is already in contacts`);
+    });
   }
 
   findByName = e => {
     this.setState({ filter: e.currentTarget.value });
-  }
+  };
 
   getVisibleContacts = () => {
     const { filter, contacts } = this.state;
@@ -49,21 +43,32 @@ export class App extends Component {
     );
   };
 
+  deleteContatct = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter((contact) => (contact.id !== contactId) ),
+    }));
+  };
+
   render() {
-    const { contacts } = this.state;
-    // const visibleContacts = this.getVisibleContacts();
+    const { filter, contacts } = this.state;
+    const visibleContacts = this.getVisibleContacts();
     return (
       <MainContainer>
         <div>
           <h1>Phonebook</h1>
-          <ContactForm onSubmit={this.formSubmitHаndler}/>
+          <ContactForm onSubmit={this.formSubmitHandler}/>
 
           <h2>Contacts</h2>
+          <label>
+            Find contacts by name
+            <input type="text" value={filter} onChange={this.findByName} />
+          </label>
           {/* <Filter value={filter} onChange={this.findByName}/> */}
-          <ContactList contacts={contacts}/>
+          <ContactList
+            contacts={visibleContacts}
+            onDeleteContact={this.deleteContatct}/>
         </div>
       </MainContainer>
     );
   }
-  
 }
