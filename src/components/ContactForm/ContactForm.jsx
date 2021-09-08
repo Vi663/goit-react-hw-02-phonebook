@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import s from './ContactForm.module.css';
 
 export class ContactForm extends Component {
   
@@ -30,9 +31,10 @@ export class ContactForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label htmlFor={this.nameInputId}>Name </label>
+      <form className={s.ContactForm} onSubmit={this.handleSubmit}>
+        <label htmlFor={this.nameInputId}>Name</label>
         <input
+          className={s.ContactInput}
           type="text"
           name="name"
           value={this.state.name}
@@ -44,8 +46,9 @@ export class ContactForm extends Component {
           required
         />
         
-        <label htmlFor={this.numberInputId}> Phone number </label>
+        <label htmlFor={this.numberInputId}>Phone number</label>
         <input
+          className={s.ContactInput}
           type="tel"
           name="number"
           value={this.state.number}
@@ -55,7 +58,9 @@ export class ContactForm extends Component {
           title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
           required
         />
-        <button type="submit" name="submit">Add Contact</button>
+        <button className={s.ContactBtn}
+          type="submit"
+          name="submit">Add Contact</button>
       </form>
       
     )
