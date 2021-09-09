@@ -38,26 +38,26 @@ export class App extends Component {
     );
   };
 
-  deleteContatct = contactId => {
+  deleteContact = contactId => {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter((contact) => (contact.id !== contactId) ),
     }));
   };
+
+  
 
   render() {
     const { filter } = this.state;
     const visibleContacts = this.getVisibleContacts();
     return (
       <MainContainer>
-        <div>
           <h1>Phonebook</h1>
           <ContactForm onSubmit={this.formSubmitHandler}/>
 
           <Filter value={filter} onChange={this.findByName}/>
           <ContactList
             contacts={visibleContacts}
-            onDeleteContact={this.deleteContatct}/>
-        </div>
+            onDeleteContact={this.deleteContact}/>
       </MainContainer>
     );
   }
